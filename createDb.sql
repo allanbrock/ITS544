@@ -16,6 +16,7 @@ USE `mydb` ;
 
 -- -----------------------------------------------------
 -- Table `mydb`.`students`
+-- Author: Allan Brockenbrough (for now)
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`students` ;
 
