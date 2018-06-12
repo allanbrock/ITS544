@@ -1,26 +1,30 @@
 
+-- -----------------------------------------------------
+-- Version 1
+-- -----------------------------------------------------
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema its544db
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `mydb` ;
+DROP SCHEMA IF EXISTS `its544db` ;
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema its544db
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `its544db` DEFAULT CHARACTER SET utf8 ;
+USE `its544db` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`students`
+-- Table `its544db`.`students`
 -- Author: Allan Brockenbrough (for now)
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`students` ;
+DROP TABLE IF EXISTS `its544db`.`students` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`students` (
+CREATE TABLE IF NOT EXISTS `its544db`.`students` (
   `idNumber` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(128) NULL DEFAULT NULL,
   `runId` VARCHAR(128) NULL,
