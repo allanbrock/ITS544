@@ -1,3 +1,4 @@
+-- A stupid change!
 -- -----------------------------------------------------
 -- Table `its544db`.`students`
 -- Author: 
