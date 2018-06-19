@@ -1,4 +1,9 @@
--- A stupid change!
+-- -----------------------------------------------------
+-- Schema its544db
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `its544db` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
 -- -----------------------------------------------------
 -- Table `its544db`.`students`
 -- Author: 
@@ -39,4 +44,4 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- Table: students
 -- Author: Allan Brockenbrough
-insert into students (fname, lname) VALUES ('Sam','Macar');
+-- insert into students (fname, lname) VALUES ('Sam','Macar');
