@@ -52,15 +52,40 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `its544db`.`session`
+-- Author: Adam and Ken
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`session` (
+  `sessionID` CHAR(6) NOT NULL,
+  `sessionSeason` CHAR(2) NOT NULL,
+  `startDate` DATE NOT NULL,
+  `endDate` DATE NOT NULL,
+  PRIMARY KEY (`sessionID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`classroom`
+-- Author: Adam and Ken
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`classroom` (
+  `classroomId` INT NOT NULL,
+  `roomType` VARCHAR(45) NOT NULL,
+  `seats` INT NOT NULL,
+  `hasProjector` CHAR(1) NOT NULL,
+  PRIMARY KEY (`classroomId`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `its544db`.`section`
 -- Author: Adam and Ken
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `its544db`.`section` (
   `sectionID` INT NOT NULL,
   `classId` INT NOT NULL,
+  `session_sessionID` CHAR(6) NOT NULL,
   `FK_facultyId` VARCHAR(45) NOT NULL,
-  `FK_sessionID` VARCHAR(45) NULL,
-  `FK_roomId` VARCHAR(45) NULL,
   `startDate` DATE NOT NULL,
   `endDate` DATE NOT NULL,
   `meetTimeSun` TIME NULL,
@@ -70,11 +95,24 @@ CREATE TABLE IF NOT EXISTS `its544db`.`section` (
   `meetTimeThu` TIME NULL,
   `meetTimeFri` TIME NULL,
   `meetTimeSat` TIME NULL,
+  `classroom_classroomId` INT NOT NULL,
   INDEX `fk_section_class_idx` (`classId` ASC),
   PRIMARY KEY (`sectionID`),
+  INDEX `fk_section_session1_idx` (`session_sessionID` ASC),
+  INDEX `fk_section_classroom1_idx` (`classroom_classroomId` ASC),
   CONSTRAINT `fk_section_class`
     FOREIGN KEY (`classId`)
     REFERENCES `its544db`.`class` (`classId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_section_session1`
+    FOREIGN KEY (`session_sessionID`)
+    REFERENCES `its544db`.`session` (`sessionID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_section_classroom1`
+    FOREIGN KEY (`classroom_classroomId`)
+    REFERENCES `its544db`.`classroom` (`classroomId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
