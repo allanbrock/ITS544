@@ -59,6 +59,22 @@ CREATE TABLE IF NOT EXISTS `its544db`.`dorm rooms` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Deniz and Mustafa
+-- Table `its544db`.`club`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`club` (
+  `clubId` INT NOT NULL,
+  `clubName` VARCHAR(45) NULL,
+  `studentId` INT(11) NOT NULL,
+  PRIMARY KEY (`clubId`),
+  INDEX `fk_club_students1_idx` (`studentId` ASC),
+  CONSTRAINT `fk_club_students1`
+    FOREIGN KEY (`studentId`)
+    REFERENCES `its544db`.`students` (`studentId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 -- ADD YOUR TABLES ABOVE THIS POINT
                -
