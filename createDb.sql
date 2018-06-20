@@ -211,3 +211,127 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Table: students
 -- Author: Allan Brockenbrough
 -- insert into students (fname, lname) VALUES ('Sam','Macar');
+               
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema its544db
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema its544db
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `its544db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `its544db` ;
+
+-- -----------------------------------------------------
+-- Table `its544db`.`faculty`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`faculty` (
+  `facultyId` INT(11) NOT NULL AUTO_INCREMENT,
+  `fname` VARCHAR(128) NULL DEFAULT NULL,
+  `lname` VARCHAR(128) NULL DEFAULT NULL,
+  PRIMARY KEY (`facultyId`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`students`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`students` (
+  `studentId` INT(11) NOT NULL AUTO_INCREMENT,
+  `fname` VARCHAR(128) NULL DEFAULT NULL,
+  `lname` VARCHAR(128) NULL DEFAULT NULL,
+  PRIMARY KEY (`studentId`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`jobTitle`
+-- Authors: Enime and Tim 
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`jobTitle` (
+  `jobTitleId` INT NOT NULL,
+  `jobTitleName` VARCHAR(45) NULL,
+  `FK_salary` VARCHAR(45) NULL,
+  PRIMARY KEY (`jobTitleId`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`facultyMember`
+-- Authors: Enime and Tim 
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`facultyMember` (
+  `facultyId` INT NOT NULL,
+  `facultyMemLname` VARCHAR(45) NULL,
+  `facultyMemFname` VARCHAR(45) NULL,
+  `departmentId` INT NOT NULL,
+  `jobTitleId` INT NOT NULL,
+  PRIMARY KEY (`facultyId`),
+  INDEX `fk_faculty_member_department1_idx` (`departmentId` ASC),
+  INDEX `fk_faculty_member_job_title1_idx` (`jobTitleId` ASC),
+  CONSTRAINT `fk_faculty_member_department1`
+    FOREIGN KEY (`departmentId`)
+    REFERENCES `its544db`.`department` (`departmentId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_faculty_member_job_title1`
+    FOREIGN KEY (`jobTitleId`)
+    REFERENCES `its544db`.`jobTitle` (`jobTitleId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`department`
+-- Authors: Enime and Tim 
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`department` (
+  `departmentId` INT NOT NULL,
+  `departmentName` VARCHAR(45) NULL,
+  `departmentHead` INT NOT NULL,
+  PRIMARY KEY (`departmentId`),
+  INDEX `fk_department_facultyMember1_idx` (`departmentHead` ASC),
+  CONSTRAINT `fk_department_facultyMember1`
+    FOREIGN KEY (`departmentHead`)
+    REFERENCES `its544db`.`facultyMember` (`facultyId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`major`
+-- Authors: Enime and Tim 
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`major` (
+  `majorId` INT NOT NULL,
+  `majorName` VARCHAR(45) NULL,
+  `departmentId` INT NOT NULL,
+  PRIMARY KEY (`majorId`),
+  INDEX `fk_major_department_idx` (`departmentId` ASC),
+  CONSTRAINT `fk_major_department`
+    FOREIGN KEY (`departmentId`)
+    REFERENCES `its544db`.`department` (`departmentId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
