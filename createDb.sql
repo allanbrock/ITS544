@@ -335,3 +335,22 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+INSERT INTO its544db.students values
+	(1
+    ,'Mickey'
+    ,'Mouse'
+    ,null
+    ,'1928-11-18'
+    ,'000112222'
+    ,'M'
+    ,'N'
+    ,'Walt Disney World Resort'
+    ,null
+    ,'Orlando'
+    ,'FL'
+    ,'32830'
+    ,'USA'
+    ,null
+    ,null
+    ,'5553331111'
+    ,'mickey@disney.com')
