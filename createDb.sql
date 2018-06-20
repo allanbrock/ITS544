@@ -353,4 +353,12 @@ INSERT INTO its544db.students values
     ,null
     ,null
     ,'5553331111'
-    ,'mickey@disney.com')
+    ,'mickey@disney.com'
+    ,null)
+	       ;
+	       -- Table: students
+            
+-- Deniz and Mustafa
+-- insert into sportTeams (sportTeamId, sportTeamName) VALUES (1000,'Hockey');
+-- insert into teamAssignments (sportTeamsId, studentId) VALUES (1000, 1);
+
