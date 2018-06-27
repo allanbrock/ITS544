@@ -560,3 +560,6 @@ INSERT INTO its544db.students values
 -- insert into sportTeams (sportTeamId, sportTeamName) VALUES (1000,'Hockey');
 -- insert into teamAssignments (sportTeamsId, studentId) VALUES (1000, 1);
 
+-- Elif and Ibrahim
+-- INSERT INTO `salary` (`salaryId`,`salarDateFrom`,`salaryDateTo`,`salaryAmountYearly`) VALUES ('SA001','09/04/2017','09/07/2018',65,000.00);
+--INSERT INTO `salary` (`salaryId`,`salarDateFrom`,`salaryDateTo`,`salaryAmountYearly`) VALUES ('SA002','09/05/2016','09/07/2018',105,000.00);
