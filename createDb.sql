@@ -7,6 +7,11 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 -- -----------------------------------------------------
 -- Schema its544db
 -- -----------------------------------------------------
@@ -15,13 +20,92 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema its544db
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `its544db` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`salary`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`salary` (
+  `salary_id` INT NOT NULL,
+  `salary_date_from` DATE NULL,
+  `salary_date_to` DATE NULL,
+  `salary_amount_yearly` INT NULL,
+  PRIMARY KEY (`salary_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`job title`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`job title` (
+  `job_title_id` INT NOT NULL,
+  `job_title_name` VARCHAR(45) NULL,
+  `salary_salary_id` INT NOT NULL,
+  PRIMARY KEY (`job_title_id`),
+  INDEX `fk_job_title_salary_idx` (`salary_salary_id` ASC),
+  CONSTRAINT `fk_job_title_salary`
+    FOREIGN KEY (`salary_salary_id`)
+    REFERENCES `mydb`.`salary` (`salary_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`departmant credit cost`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`departmant credit cost` (
+  `cost_id` INT NOT NULL,
+  `cost_per_credit` INT NULL,
+  PRIMARY KEY (`cost_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`student balance sheet`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`student balance sheet` (
+)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`financial aid`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`financial aid` (
+  `f_aid_id` INT NOT NULL,
+  `f_aid_amount` INT NULL,
+  PRIMARY KEY (`f_aid_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`course payment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`course payment` (
+  `payment_id` INT NOT NULL,
+  `payment_amount` DOUBLE NULL,
+  `payment_date` DATE NULL,
+  PRIMARY KEY (`payment_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`dorm_payment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`dorm_payment` (
+  `dorm_id` INT NOT NULL,
+  `dorm_amount` DOUBLE NULL,
+  PRIMARY KEY (`dorm_id`))
+ENGINE = InnoDB;
+
 USE `its544db` ;
 
 -- -----------------------------------------------------
 -- Table `its544db`.`salary`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `its544db`.`salary` (
-  `salaryId` INT(11) NOT NULL,
+  `salaryId` VARCHAR(20) NOT NULL,
   `salarDateFrom` DATE NULL DEFAULT NULL,
   `salaryDateTo` DATE NULL DEFAULT NULL,
   `salaryAmountYearly` INT(11) NULL DEFAULT NULL,
@@ -36,14 +120,12 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `its544db`.`jobtitle` (
   `jobTitleId` INT(11) NOT NULL,
   `jobTitleName` VARCHAR(45) NULL DEFAULT NULL,
-  `salaryId` INT(11) NOT NULL,
+  `salaryId` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`jobTitleId`),
   INDEX `fk_jobtitle_salary1_idx` (`salaryId` ASC),
   CONSTRAINT `fk_jobtitle_salary1`
     FOREIGN KEY (`salaryId`)
-    REFERENCES `its544db`.`salary` (`salaryId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`salary` (`salaryId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -101,9 +183,7 @@ CREATE TABLE IF NOT EXISTS `its544db`.`class` (
   INDEX `fk_class_department1_idx` (`departmentId` ASC),
   CONSTRAINT `fk_class_department1`
     FOREIGN KEY (`departmentId`)
-    REFERENCES `its544db`.`department` (`departmentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`department` (`departmentId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -127,10 +207,78 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `its544db`.`club` (
   `clubId` INT(11) NOT NULL,
   `clubName` VARCHAR(45) NULL DEFAULT NULL,
-  `ClubMeetingRoom` VARCHAR(45) NULL,
-  `clubMeetingDay` VARCHAR(45) NULL,
-  `clubMeetingTime` VARCHAR(45) NULL,
+  `ClubMeetingRoom` VARCHAR(45) NULL DEFAULT NULL,
+  `clubMeetingDay` VARCHAR(45) NULL DEFAULT NULL,
+  `clubMeetingTime` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`clubId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`financial aid`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`financial aid` (
+  `fAidId` VARCHAR(20) NOT NULL,
+  `fAidAmount` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`fAidId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`students`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`students` (
+  `studentId` INT NOT NULL,
+  `fname` VARCHAR(128) NOT NULL,
+  `lname` VARCHAR(128) NOT NULL,
+  `mname` VARCHAR(128) NULL DEFAULT NULL,
+  `dateOfBirth` DATE NOT NULL,
+  `ssn` CHAR(9) NOT NULL,
+  `genderCd` CHAR(1) NOT NULL,
+  `foreignAddressIndicator` CHAR(1) NOT NULL,
+  `addressLine1` VARCHAR(128) NOT NULL,
+  `addressLine2` VARCHAR(128) NULL DEFAULT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  `state` CHAR(2) NULL DEFAULT NULL,
+  `zip` CHAR(9) NULL DEFAULT NULL,
+  `country` VARCHAR(45) NOT NULL,
+  `foreignPostalCode` VARCHAR(20) NULL DEFAULT NULL,
+  `foeignTerritory` VARCHAR(90) NULL DEFAULT NULL,
+  `phoneNumber` CHAR(10) NOT NULL,
+  `emailAddress` VARCHAR(120) NOT NULL,
+  `fadvisorFacultyId` INT(11) NOT NULL,
+  `fAidId` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`studentId`),
+  INDEX `fk_students_facultymember1_idx` (`fadvisorFacultyId` ASC),
+  INDEX `fk_students_financial aid1_idx` (`fAidId` ASC),
+  CONSTRAINT `fk_students_facultymember1`
+    FOREIGN KEY (`fadvisorFacultyId`)
+    REFERENCES `its544db`.`facultymember` (`facultyId`),
+  CONSTRAINT `fk_students_financial aid1`
+    FOREIGN KEY (`fAidId`)
+    REFERENCES `its544db`.`financial aid` (`fAidId`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `its544db`.`clubassigments`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`clubassigments` (
+  `clubId` INT(11) NOT NULL,
+  `studentId` INT(11) NOT NULL,
+  PRIMARY KEY (`clubId`, `studentId`),
+  INDEX `fk_club_has_students_students1_idx` (`studentId` ASC),
+  INDEX `fk_club_has_students_club1_idx` (`clubId` ASC),
+  CONSTRAINT `fk_club_has_students_club1`
+    FOREIGN KEY (`clubId`)
+    REFERENCES `its544db`.`club` (`clubId`),
+  CONSTRAINT `fk_club_has_students_students1`
+    FOREIGN KEY (`studentId`)
+    REFERENCES `its544db`.`students` (`studentId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -177,68 +325,13 @@ CREATE TABLE IF NOT EXISTS `its544db`.`section` (
   CONSTRAINT `fk_section_classroom1`
     FOREIGN KEY (`classroomId`)
     REFERENCES `its544db`.`classroom` (`classroomId`),
-  CONSTRAINT `fk_section_session1`
-    FOREIGN KEY (`session_sessionID`)
-    REFERENCES `its544db`.`session` (`sessionID`),
   CONSTRAINT `fk_section_facultymember1`
     FOREIGN KEY (`facultyId`)
-    REFERENCES `its544db`.`facultymember` (`facultyId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`facultymember` (`facultyId`),
+  CONSTRAINT `fk_section_session1`
+    FOREIGN KEY (`session_sessionID`)
+    REFERENCES `its544db`.`session` (`sessionID`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `its544db`.`financial aid`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `its544db`.`financial aid` (
-  `fAidId` INT(11) NOT NULL,
-  `fAidAmount` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`fAidId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `its544db`.`students`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `its544db`.`students` (
-  `studentId` INT(11) NOT NULL AUTO_INCREMENT,
-  `fname` VARCHAR(128) NOT NULL,
-  `lname` VARCHAR(128) NOT NULL,
-  `mname` VARCHAR(128) NULL DEFAULT NULL,
-  `dateOfBirth` DATE NOT NULL,
-  `ssn` CHAR(9) NOT NULL,
-  `genderCd` CHAR(1) NOT NULL,
-  `foreignAddressIndicator` CHAR(1) NOT NULL,
-  `addressLine1` VARCHAR(128) NOT NULL,
-  `addressLine2` VARCHAR(128) NULL DEFAULT NULL,
-  `city` VARCHAR(45) NOT NULL,
-  `state` CHAR(2) NULL DEFAULT NULL,
-  `zip` CHAR(9) NULL DEFAULT NULL,
-  `country` VARCHAR(45) NOT NULL,
-  `foreignPostalCode` VARCHAR(20) NULL DEFAULT NULL,
-  `foeignTerritory` VARCHAR(90) NULL DEFAULT NULL,
-  `phoneNumber` CHAR(10) NOT NULL,
-  `emailAddress` VARCHAR(120) NOT NULL,
-  `fadvisorFacultyId` INT(11) NOT NULL,
-  `fAidId` INT(11) NOT NULL,
-  PRIMARY KEY (`studentId`),
-  INDEX `fk_students_facultymember1_idx` (`fadvisorFacultyId` ASC),
-  INDEX `fk_students_financial aid1_idx` (`fAidId` ASC),
-  CONSTRAINT `fk_students_facultymember1`
-    FOREIGN KEY (`fadvisorFacultyId`)
-    REFERENCES `its544db`.`facultymember` (`facultyId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_students_financial aid1`
-    FOREIGN KEY (`fAidId`)
-    REFERENCES `its544db`.`financial aid` (`fAidId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -275,9 +368,7 @@ CREATE TABLE IF NOT EXISTS `its544db`.`course payment` (
   INDEX `fk_course payment_registration1_idx` (`registration_sectionID` ASC, `registration_studentId` ASC),
   CONSTRAINT `fk_course payment_registration1`
     FOREIGN KEY (`registration_sectionID` , `registration_studentId`)
-    REFERENCES `its544db`.`registration` (`sectionID` , `studentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`registration` (`sectionID` , `studentId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -286,16 +377,14 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `its544db`.`departmant credit cost`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `its544db`.`departmant credit cost` (
-  `costId` INT(11) NOT NULL,
+  `costId` VARCHAR(20) NOT NULL,
   `costPerCredit` INT(11) NULL DEFAULT NULL,
   `departmentId` INT(11) NOT NULL,
   PRIMARY KEY (`costId`),
   INDEX `fk_departmant credit cost_department1_idx` (`departmentId` ASC),
   CONSTRAINT `fk_departmant credit cost_department1`
     FOREIGN KEY (`departmentId`)
-    REFERENCES `its544db`.`department` (`departmentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`department` (`departmentId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -319,8 +408,8 @@ CREATE TABLE IF NOT EXISTS `its544db`.`dorm rooms` (
   `roomNo` VARCHAR(45) NOT NULL,
   `roomCapacity` VARCHAR(45) NULL DEFAULT NULL,
   `dormId` INT(11) NOT NULL,
-  INDEX `fk_dorm rooms_dorm_idx` (`dormId` ASC),
   PRIMARY KEY (`roomNo`),
+  INDEX `fk_dorm rooms_dorm_idx` (`dormId` ASC),
   CONSTRAINT `fk_dorm rooms_dorm`
     FOREIGN KEY (`dormId`)
     REFERENCES `its544db`.`dorm` (`dormId`))
@@ -329,24 +418,20 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `its544db`.`roomAssignment`
+-- Table `its544db`.`roomassignment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `its544db`.`roomAssignment` (
+CREATE TABLE IF NOT EXISTS `its544db`.`roomassignment` (
   `studentId` INT(11) NOT NULL,
   `roomNo` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`studentId`, `roomNo`),
   INDEX `fk_students_has_dorm rooms_dorm rooms1_idx` (`roomNo` ASC),
   INDEX `fk_students_has_dorm rooms_students1_idx` (`studentId` ASC),
-  CONSTRAINT `fk_students_has_dorm rooms_students1`
-    FOREIGN KEY (`studentId`)
-    REFERENCES `its544db`.`students` (`studentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_students_has_dorm rooms_dorm rooms1`
     FOREIGN KEY (`roomNo`)
-    REFERENCES `its544db`.`dorm rooms` (`roomNo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`dorm rooms` (`roomNo`),
+  CONSTRAINT `fk_students_has_dorm rooms_students1`
+    FOREIGN KEY (`studentId`)
+    REFERENCES `its544db`.`students` (`studentId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -358,14 +443,12 @@ CREATE TABLE IF NOT EXISTS `its544db`.`dorm payment` (
   `studentId` INT(11) NOT NULL,
   `roomNo` VARCHAR(45) NOT NULL,
   `dormAmount` DOUBLE NOT NULL,
-  `paymentDate` DATE NULL,
+  `paymentDate` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`studentId`, `roomNo`),
   INDEX `fk_dorm payment_roomAssignment1_idx` (`studentId` ASC, `roomNo` ASC),
   CONSTRAINT `fk_dorm payment_roomAssignment1`
     FOREIGN KEY (`studentId` , `roomNo`)
-    REFERENCES `its544db`.`roomAssignment` (`studentId` , `roomNo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`roomassignment` (`studentId` , `roomNo`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -387,6 +470,22 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `its544db`.`sportteam`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `its544db`.`sportteam` (
+  `sportTeamId` INT(11) NOT NULL,
+  `sportTeamName` VARCHAR(45) NULL DEFAULT NULL,
+  `sportTeamWins` VARCHAR(45) NULL DEFAULT NULL,
+  `sportTeamLoses` VARCHAR(45) NULL DEFAULT NULL,
+  `sportTeamMeetingPlace` VARCHAR(45) NULL DEFAULT NULL,
+  `sportTeamMeetingDay` VARCHAR(45) NULL DEFAULT NULL,
+  `sportTeamMeetingTime` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`sportTeamId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `its544db`.`student balance sheet`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `its544db`.`student balance sheet` (
@@ -394,88 +493,44 @@ CREATE TABLE IF NOT EXISTS `its544db`.`student balance sheet` (
   `studentId` INT(11) NOT NULL,
   `description` VARCHAR(45) NOT NULL,
   `amount` DOUBLE NOT NULL,
-  `balance` DOUBLE NULL,
+  `balance` DOUBLE NULL DEFAULT NULL,
   `sessionID` CHAR(6) NOT NULL,
   PRIMARY KEY (`sbsId`),
   INDEX `fk_student balance sheet_students1_idx` (`studentId` ASC),
   INDEX `fk_student balance sheet_session1_idx` (`sessionID` ASC),
-  CONSTRAINT `fk_student balance sheet_students1`
-    FOREIGN KEY (`studentId`)
-    REFERENCES `its544db`.`students` (`studentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_student balance sheet_session1`
     FOREIGN KEY (`sessionID`)
-    REFERENCES `its544db`.`session` (`sessionID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `its544db`.`clubAssigments`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `its544db`.`clubAssigments` (
-  `clubId` INT(11) NOT NULL,
-  `studentId` INT(11) NOT NULL,
-  PRIMARY KEY (`clubId`, `studentId`),
-  INDEX `fk_club_has_students_students1_idx` (`studentId` ASC),
-  INDEX `fk_club_has_students_club1_idx` (`clubId` ASC),
-  CONSTRAINT `fk_club_has_students_club1`
-    FOREIGN KEY (`clubId`)
-    REFERENCES `its544db`.`club` (`clubId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_club_has_students_students1`
+    REFERENCES `its544db`.`session` (`sessionID`),
+  CONSTRAINT `fk_student balance sheet_students1`
     FOREIGN KEY (`studentId`)
-    REFERENCES `its544db`.`students` (`studentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `its544db`.`students` (`studentId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `its544db`.`sportTeam`
+-- Table `its544db`.`teamassignments`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `its544db`.`sportTeam` (
-  `sportTeamId` INT NOT NULL,
-  `sportTeamName` VARCHAR(45) NULL,
-  `sportTeamWins` VARCHAR(45) NULL,
-  `sportTeamLoses` VARCHAR(45) NULL,
-  `sportTeamMeetingPlace` VARCHAR(45) NULL,
-  `sportTeamMeetingDay` VARCHAR(45) NULL,
-  `sportTeamMeetingTime` VARCHAR(45) NULL,
-  PRIMARY KEY (`sportTeamId`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `its544db`.`teamAssignments`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `its544db`.`teamAssignments` (
-  `sportTeamId` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `its544db`.`teamassignments` (
+  `sportTeamId` INT(11) NOT NULL,
   `studentId` INT(11) NOT NULL,
   PRIMARY KEY (`sportTeamId`, `studentId`),
   INDEX `fk_spotTeam_has_students_students1_idx` (`studentId` ASC),
   INDEX `fk_spotTeam_has_students_spotTeam1_idx` (`sportTeamId` ASC),
   CONSTRAINT `fk_spotTeam_has_students_spotTeam1`
     FOREIGN KEY (`sportTeamId`)
-    REFERENCES `its544db`.`sportTeam` (`sportTeamId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `its544db`.`sportteam` (`sportTeamId`),
   CONSTRAINT `fk_spotTeam_has_students_students1`
     FOREIGN KEY (`studentId`)
-    REFERENCES `its544db`.`students` (`studentId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `its544db`.`students` (`studentId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 
 INSERT INTO its544db.students values
